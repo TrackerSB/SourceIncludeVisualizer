@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'bayern.steinbrecher'
@@ -20,4 +21,9 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    implementation 'bayern.steinbrecher:jcommander:1.80'
+}
+
+application {
+    mainClassName = 'bayern.steinbrecher.sourceIncludeVisualizer.Main'
 }
