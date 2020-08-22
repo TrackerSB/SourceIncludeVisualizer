@@ -9,6 +9,10 @@ repositories {
     mavenCentral()
 }
 
+java {
+    modularity.inferModulePath = true
+}
+
 compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
