@@ -24,9 +24,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        CommandLine commandLine = new CommandLine();
+        CommandLineArgs commandLineArgs = new CommandLineArgs();
         JCommander jCommander = JCommander.newBuilder()
-                .addObject(commandLine)
+                .addObject(commandLineArgs)
                 .build();
         jCommander.setProgramName("SourceIncludeVisualizer");
         boolean programCallInvalid = false;
@@ -37,10 +37,10 @@ public class Main {
             programCallInvalid = true;
         }
 
-        if (commandLine.isShowHelpOptionSet() || programCallInvalid) {
+        if (commandLineArgs.isShowHelpOptionSet() || programCallInvalid) {
             jCommander.usage();
         } else {
-            Queue<String> includeElementsToProcess = new ArrayDeque<>(commandLine.getIncludesToAnalyze());
+            Queue<String> includeElementsToProcess = new ArrayDeque<>(commandLineArgs.getIncludesToAnalyze());
             while (!includeElementsToProcess.isEmpty()) {
                 Path includeElementPath = Paths.get(includeElementsToProcess.poll())
                         .toAbsolutePath();

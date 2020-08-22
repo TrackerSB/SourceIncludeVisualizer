@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Parameters(resourceBundle = "bayern.steinbrecher.sourceIncludeVisualizer.CommandLine",
         commandDescriptionKey = "commandLineDescription")
-public final class CommandLine {
+public final class CommandLineArgs {
     @Parameter(names = {"--help", "-h"}, descriptionKey = "optionHelp", help = true)
     private boolean showHelp = false;
     @Parameter(names = {"--include", "-i"}, descriptionKey = "optionInclude",
@@ -22,7 +22,7 @@ public final class CommandLine {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private List<String> includesToAnalyze;
 
-    public CommandLine() {
+    public CommandLineArgs() {
     }
 
     @Contract(value = " -> new", pure = true)
