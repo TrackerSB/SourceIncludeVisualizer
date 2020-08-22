@@ -1,26 +1,23 @@
 package bayern.steinbrecher.sourceIncludeVisualizer;
 
 import bayern.steinbrecher.jcommander.JCommander;
-import bayern.steinbrecher.jcommander.Parameter;
 import bayern.steinbrecher.jcommander.ParameterException;
-import bayern.steinbrecher.jcommander.Parameters;
 
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @author Stefan Huber
+ * @since 0.1
+ */
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-
-    @Parameters(resourceBundle = "bayern.steinbrecher.sourceIncludeVisualizer.CommandLine",
-            commandDescriptionKey = "commandLineDescription")
-    private static class CommandLine {
-        @Parameter(names = {"--help", "-h"}, descriptionKey = "optionHelp", help = true)
-        private boolean showHelp = false;
-        @Parameter(names = {"--includeDirectories", "-i"}, descriptionKey = "optionIncludeDirectories",
-                required = true, variableArity = true)
-        private List<String> includeDirectories;
-    }
 
     private Main() {
         throw new UnsupportedOperationException("Construction of objects prohibited");
@@ -32,17 +29,33 @@ public class Main {
                 .addObject(commandLine)
                 .build();
         jCommander.setProgramName("SourceIncludeVisualizer");
+        boolean programCallInvalid = false;
         try {
             jCommander.parse(args);
         } catch (ParameterException ex) {
             LOGGER.log(Level.SEVERE, "Could not start program", ex);
-            commandLine.showHelp = true;
+            programCallInvalid = true;
         }
 
-        if(commandLine.showHelp){
+        if (commandLine.isShowHelpOptionSet() || programCallInvalid) {
             jCommander.usage();
         } else {
-            System.out.println(commandLine.includeDirectories);
+            Queue<String> includeElementsToProcess = new ArrayDeque<>(commandLine.getIncludesToAnalyze());
+            while (!includeElementsToProcess.isEmpty()) {
+                Path includeElementPath = Paths.get(includeElementsToProcess.poll())
+                        .toAbsolutePath();
+                try {
+                    Files.walkFileTree(includeElementPath, new AnalyzeElementsFinder());
+                } catch (IOException ex) {
+                    LOGGER.log(
+                            Level.SEVERE,
+                            String.format(
+                                    "Could not search for elements to analyze in '%s'",
+                                    includeElementPath.toString()
+                            )
+                    );
+                }
+            }
         }
     }
 }
