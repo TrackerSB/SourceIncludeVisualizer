@@ -2,6 +2,7 @@ package bayern.steinbrecher.sourceIncludeVisualizer;
 
 import bayern.steinbrecher.jcommander.JCommander;
 import bayern.steinbrecher.jcommander.ParameterException;
+import bayern.steinbrecher.sourceIncludeVisualizer.cpp.CPPIncludeGraphGenerator;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,7 +46,7 @@ public class Main {
                 Path includeElementPath = Paths.get(includeElementsToProcess.poll())
                         .toAbsolutePath();
                 try {
-                    Files.walkFileTree(includeElementPath, new AnalyzeElementsFinder());
+                    Files.walkFileTree(includeElementPath, new CPPIncludeGraphGenerator());
                 } catch (IOException ex) {
                     LOGGER.log(
                             Level.SEVERE,

@@ -1,4 +1,4 @@
-package bayern.steinbrecher.sourceIncludeVisualizer;
+package bayern.steinbrecher.sourceIncludeVisualizer.cpp;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -14,13 +14,13 @@ import java.util.logging.Logger;
  * @author Stefan Huber
  * @since 0.1
  */
-public class AnalyzeElementsFinder extends SimpleFileVisitor<Path> {
-    private static final Logger LOGGER = Logger.getLogger(AnalyzeElementsFinder.class.getName());
+public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
+    private static final Logger LOGGER = Logger.getLogger(CPPIncludeGraphGenerator.class.getName());
     private static final PathMatcher FILE_FORMAT_MATCHER
             = FileSystems.getDefault().getPathMatcher("glob:*.{h,hpp,hxx,cpp,cxx}");
     private int numFoundElements = 0;
 
-    public AnalyzeElementsFinder() {
+    public CPPIncludeGraphGenerator() {
     }
 
     @Override
