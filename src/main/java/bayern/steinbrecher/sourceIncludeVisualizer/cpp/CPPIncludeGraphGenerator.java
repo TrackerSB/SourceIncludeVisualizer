@@ -18,7 +18,6 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
     private static final Logger LOGGER = Logger.getLogger(CPPIncludeGraphGenerator.class.getName());
     private static final PathMatcher FILE_FORMAT_MATCHER
             = FileSystems.getDefault().getPathMatcher("glob:**/*.{h,hpp,hxx,cpp,cxx}");
-    private int numFoundElements = 0;
 
     public CPPIncludeGraphGenerator() {
     }
@@ -26,15 +25,10 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         if (FILE_FORMAT_MATCHER.matches(file)) {
-            numFoundElements++;
             LOGGER.log(Level.FINE, String.format("Matches: '%s'", file.toString()));
         } else {
             LOGGER.log(Level.FINE, String.format("Matches not: '%s'", file.toString()));
         }
         return super.visitFile(file, attrs);
-    }
-
-    public int getNumFoundElements() {
-        return numFoundElements;
     }
 }
