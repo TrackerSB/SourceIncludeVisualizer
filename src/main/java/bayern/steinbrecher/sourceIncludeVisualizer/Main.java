@@ -62,7 +62,7 @@ public class Main {
             }
             Path outputFile;
             try {
-                outputFile = Files.createTempFile(null, null);
+                outputFile = Files.createTempFile("SourceIncludeVisualizer_", ".graphml");
             } catch (IOException ex) {
                 throw new Error("Could not create output file for storing generated GraphML description", ex);
             }
@@ -72,6 +72,7 @@ public class Main {
             } catch (IOException ex) {
                 throw new Error("Could not export generated GraphML description", ex);
             }
+            LOGGER.log(Level.INFO, String.format("Exported GraphML description to '%s'", outputFile));
         }
     }
 }
