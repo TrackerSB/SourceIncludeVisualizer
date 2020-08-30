@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * @since 0.1
+ */
 public final class GraphMLGenerator {
     private static final Collection<String> GROUP_COLOR_NAMES = List.of(
             "green",
