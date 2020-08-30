@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
  * @author Stefan Huber
  * @since 0.1
  */
-public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
-    private static final Logger LOGGER = Logger.getLogger(CPPIncludeGraphGenerator.class.getName());
+public class CPPIncludeGraphAnalyzer extends SimpleFileVisitor<Path> {
+    private static final Logger LOGGER = Logger.getLogger(CPPIncludeGraphAnalyzer.class.getName());
     private static final PathMatcher FILE_FORMAT_MATCHER
             = FileSystems.getDefault().getPathMatcher("glob:**/*.{h,hpp,hxx,cc,cpp,cxx}");
     private static final Pattern INCLUDE_PATTERN
@@ -34,7 +34,7 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
     private final Map<String, Collection<String>> includeDependencies = new HashMap<>();
     private Path includeRoot = null;
 
-    public CPPIncludeGraphGenerator() {
+    public CPPIncludeGraphAnalyzer() {
     }
 
     @Override

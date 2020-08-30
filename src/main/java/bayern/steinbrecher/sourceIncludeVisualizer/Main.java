@@ -2,7 +2,7 @@ package bayern.steinbrecher.sourceIncludeVisualizer;
 
 import bayern.steinbrecher.jcommander.JCommander;
 import bayern.steinbrecher.jcommander.ParameterException;
-import bayern.steinbrecher.sourceIncludeVisualizer.cpp.CPPIncludeGraphGenerator;
+import bayern.steinbrecher.sourceIncludeVisualizer.cpp.CPPIncludeGraphAnalyzer;
 import bayern.steinbrecher.sourceIncludeVisualizer.generators.GraphMLGenerator;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class Main {
             jCommander.usage();
         } else {
             Queue<String> includeElementsToProcess = new ArrayDeque<>(commandLineArgs.getIncludesToAnalyze());
-            CPPIncludeGraphGenerator graphCollector = new CPPIncludeGraphGenerator();
+            CPPIncludeGraphAnalyzer graphCollector = new CPPIncludeGraphAnalyzer();
             while (!includeElementsToProcess.isEmpty()) {
                 Path includeElementPath = Paths.get(includeElementsToProcess.poll())
                         .toAbsolutePath();
