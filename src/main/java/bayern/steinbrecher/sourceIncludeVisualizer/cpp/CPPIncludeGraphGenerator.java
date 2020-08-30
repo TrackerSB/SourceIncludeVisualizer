@@ -32,15 +32,16 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
     private static final Pattern INCLUDE_PATTERN
             = Pattern.compile("^\\s*#include\\s*[<\"](?<includeName>[\\w.]+(/[\\w.]+)*)[>\"]");
     private final Map<String, Collection<String>> includeDependencies = new HashMap<>();
+    private Path includeRoot = null;
 
     public CPPIncludeGraphGenerator() {
     }
 
     @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        if (FILE_FORMAT_MATCHER.matches(file)) {
-            // FIXME It is assumed that every file included from anywhere has an unique name
-            Collection<String> dependencies = Files.lines(file)
+    public FileVisitResult visitFile(Path absoluteFilePath, BasicFileAttributes attrs) throws IOException {
+        if (FILE_FORMAT_MATCHER.matches(absoluteFilePath)) {
+            // FIXME It is assumed that every absoluteFilePath included from anywhere has an unique name
+            Collection<String> dependencies = Files.lines(absoluteFilePath)
                     .parallel()
                     .map(INCLUDE_PATTERN::matcher)
                     .filter(Matcher::matches)
@@ -50,7 +51,7 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
                             return Paths.get(first);
                         } catch (InvalidPathException ex) {
                             LOGGER.log(
-                                    Level.WARNING, String.format("'%s' in '%s' is not a valid path", first, file), ex);
+                                    Level.WARNING, String.format("'%s' in '%s' is not a valid path", first, absoluteFilePath), ex);
                             return null;
                         }
                     })
@@ -58,12 +59,17 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
                     .map(Path::getFileName)
                     .map(Objects::toString)
                     .collect(Collectors.toList());
-            includeDependencies.put(file.getFileName().toString(), dependencies);
+            Path includePath = (includeRoot == null) ? absoluteFilePath : includeRoot.relativize(absoluteFilePath);
+            includeDependencies.put(includePath.toString(), dependencies);
         }
-        return super.visitFile(file, attrs);
+        return super.visitFile(absoluteFilePath, attrs);
     }
 
     public Map<String, Collection<String>> getIncludeDependencies(){
         return Collections.unmodifiableMap(includeDependencies);
+    }
+
+    public void setIncludeRoot(Path includeRoot) {
+        this.includeRoot = includeRoot;
     }
 }

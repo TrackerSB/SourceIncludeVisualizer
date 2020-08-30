@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +47,7 @@ public class Main {
             while (!includeElementsToProcess.isEmpty()) {
                 Path includeElementPath = Paths.get(includeElementsToProcess.poll())
                         .toAbsolutePath();
+                graphCollector.setIncludeRoot(includeElementPath);
                 try {
                     Files.walkFileTree(includeElementPath, graphCollector);
                 } catch (IOException ex) {
