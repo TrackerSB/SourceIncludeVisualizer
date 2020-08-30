@@ -2,6 +2,8 @@ package bayern.steinbrecher.sourceIncludeVisualizer.generators;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -17,6 +19,7 @@ class LibraryDetector {
     private final Collection<String> projectFiles;
     private static final String NOT_FOUND_LIBRARY_NAME = "LibraryNotFound";
     private static final String PROJECT_INTERNAL_LIBRARY_PREFIX = "project_";
+    private final Set<String> notFoundLibraries = new HashSet<>();
 
     public LibraryDetector(Collection<String> projectFiles) {
         this.projectFiles = projectFiles;
@@ -38,6 +41,7 @@ class LibraryDetector {
         return switch (containingLibraries.size()) {
             case 0 -> {
                 LOGGER.log(Level.INFO, String.format("Library which contains '%s' could not be found", file));
+                notFoundLibraries.add(file);
                 yield NOT_FOUND_LIBRARY_NAME;
             }
             case 1 -> {
@@ -53,6 +57,10 @@ class LibraryDetector {
                 yield containingLibraries.get(0);
             }
         };
+    }
+
+    public Set<String> getNotFoundLibraries() {
+        return Collections.unmodifiableSet(notFoundLibraries);
     }
 
     private enum ExternalLibrary {

@@ -8,12 +8,17 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author Stefan Huber
  * @since 0.1
  */
 public final class GraphMLGenerator {
+    private static final Logger LOGGER = Logger.getLogger(GraphMLGenerator.class.getName());
     private static final Collection<Color> GROUP_COLOR_NAMES = ColorPalette.COLOR_BLIND_FRIENDLY.getColors();
     // FIXME Assure it's not a regular group color already
     private static final Color DEFAULT_GROUP_COLOR = Color.WHITE;
@@ -81,6 +86,15 @@ public final class GraphMLGenerator {
                 graphMLBuilder.append(generateEdgeElement(file, include, DEFAULT_EDGE_COLOR));
             });
         });
+        Set<String> notFoundLibraries = libraryDetector.getNotFoundLibraries();
+        if (!notFoundLibraries.isEmpty()) {
+            String notFoundLibrariesList = notFoundLibraries.stream()
+                    .sorted(String::compareToIgnoreCase)
+                    .collect(Collectors.joining(", "));
+            String notFoundLibrariesStatistic = String.format(
+                    "#NotFoundLibraries: %d\nNot Found: %s", notFoundLibraries.size(), notFoundLibrariesList);
+            LOGGER.log(Level.INFO, notFoundLibrariesStatistic);
+        }
         graphMLBuilder.append(FOOTER);
         return graphMLBuilder.toString();
     }
