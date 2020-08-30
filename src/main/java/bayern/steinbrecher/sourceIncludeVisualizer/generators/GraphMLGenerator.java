@@ -61,11 +61,11 @@ public final class GraphMLGenerator {
         @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         SupplyingMap<String, Color> associatedGroupColors = new SupplyingMap<>(groupName -> {
             // NOTE Do not separate polling and checking for emptiness to prevent race conditions
-            Color groupColorName = remainingGroupColors.poll();
-            if (groupColorName == null) {
-                groupColorName = DEFAULT_GROUP_COLOR;
+            Color groupColor = remainingGroupColors.poll();
+            if (groupColor == null) {
+                groupColor = DEFAULT_GROUP_COLOR;
             }
-            return groupColorName;
+            return groupColor;
         });
         StringBuilder graphMLBuilder = new StringBuilder(HEADER);
         includeDependencies.forEach((file, includes) -> {
