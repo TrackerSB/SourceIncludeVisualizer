@@ -1,11 +1,11 @@
 package bayern.steinbrecher.sourceIncludeVisualizer.generators;
 
 import bayern.steinbrecher.javaUtility.SupplyingMap;
+import bayern.steinbrecher.sourceIncludeVisualizer.ColorPalette;
 
 import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -13,17 +13,7 @@ import java.util.Queue;
  * @since 0.1
  */
 public final class GraphMLGenerator {
-    private static final Collection<Color> GROUP_COLOR_NAMES = List.of(
-            // Color-blind-friendly palette from https://jfly.uni-koeln.de/color/
-            new Color(153, 153, 153),
-            new Color(230, 159, 0),
-            new Color(86, 180, 233),
-            new Color(0, 158, 115),
-            new Color(240, 228, 66),
-            new Color(0, 114, 178),
-            new Color(213, 94, 0),
-            new Color(204, 121, 167)
-    );
+    private static final Collection<Color> GROUP_COLOR_NAMES = ColorPalette.COLOR_BLIND_FRIENDLY.getColors();
     // FIXME Assure it's not a regular group color already
     private static final Color DEFAULT_GROUP_COLOR = Color.WHITE;
     // FIXME Assure it's not a regular group color already
