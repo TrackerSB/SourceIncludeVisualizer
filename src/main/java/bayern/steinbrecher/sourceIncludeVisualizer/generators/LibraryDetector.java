@@ -64,9 +64,23 @@ class LibraryDetector {
     }
 
     private enum ExternalLibrary {
+        // Based on https://en.cppreference.com/w/cpp/header (State: 2020-08-30)
         CPP_STANDARD("C++StandardLibrary", Set.of(
-                "algorithm", "deque", "functional", "iostream", "queue", "set", "string", "unordered_map", "utility",
-                "vector"
+                "algorithm", "any", "array", "assert.h", "atomic", "barrier", "bit", "bitset", "cassert", "cctype",
+                "cerrno", "cfenv", "cfloat", "charconv", "chrono", "cinttypes", "climits", "clocale", "cmath",
+                "codecvt", "compare", "complex", "concepts", "condition_variable", "coroutine", "csetjmp", "csignal",
+                "cstdarg", "cstddef", "cstdint", "cstdinttypes", "cstdio", "cstdlib", "cstring", "ctime", "ctype.h",
+                "cuchar", "cwchar", "cwtype", "deque", "errno.h", "exception", "execution", "fenv.h", "filesystem",
+                "float.h", "format", "forward_list", "fstream", "functional", "future", "initializer_list",
+                "inttypes.h", "iomanip", "ios", "iosfwd", "iostream", "istream", "iterator", "memory", "latch",
+                "limits", "limits.h", "locale", "locale.h", "map", "math.h", "memory_resource", "mutex", "new",
+                "numbers", "numeric", "optional", "ostream", "queue", "random", "ranges", "ratio", "regex",
+                "scoped_allocator", "semaphore", "set", "setjmp.h", "shared_mutex", "signal.h", "source_location",
+                "span", "sstream", "stack", "stdarg.h", "stdexcept", "stddef.h", "stdint.h", "stdio.h", "stdlib.h",
+                "streambuf", "string", "string.h", "string_view", "stop_token", "strstream", "syncstream",
+                "system_error", "thread", "time.h", "tuple", "type_traits", "typeindex", "typeinfo", "uchar.h",
+                "unordered_map", "unordered_set", "utility", "valarray", "variant", "vector", "version", "wchar.h",
+                "wctype.h"
         ));
         private static final String EXTERNAL_LIBRARY_NAME_PREFIX = "external_";
         private final String nameSuffix;
