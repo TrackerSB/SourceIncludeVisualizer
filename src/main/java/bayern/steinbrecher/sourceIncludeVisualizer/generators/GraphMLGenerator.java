@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Queue;
 
 /**
+ * @author Stefan Huber
  * @since 0.1
  */
 public final class GraphMLGenerator {
