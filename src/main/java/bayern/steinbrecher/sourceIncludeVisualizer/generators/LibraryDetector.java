@@ -57,7 +57,8 @@ class LibraryDetector {
 
     private enum ExternalLibrary {
         CPP_STANDARD("C++StandardLibrary", Set.of(
-                "algorithm", "deque", "functional", "iostream", "queue", "set", "string", "unordered_map", "utility", "vector"
+                "algorithm", "deque", "functional", "iostream", "queue", "set", "string", "unordered_map", "utility",
+                "vector"
         ));
         private static final String EXTERNAL_LIBRARY_NAME_PREFIX = "external_";
         private final String nameSuffix;
