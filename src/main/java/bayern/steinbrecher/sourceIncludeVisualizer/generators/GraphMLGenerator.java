@@ -14,11 +14,15 @@ import java.util.Queue;
  */
 public final class GraphMLGenerator {
     private static final Collection<Color> GROUP_COLOR_NAMES = List.of(
-            Color.GREEN,
-            Color.BLUE,
-            Color.RED,
-            Color.YELLOW,
-            Color.CYAN
+            // Color-blind-friendly palette from https://jfly.uni-koeln.de/color/
+            new Color(153, 153, 153),
+            new Color(230, 159, 0),
+            new Color(86, 180, 233),
+            new Color(0, 158, 115),
+            new Color(240, 228, 66),
+            new Color(0, 114, 178),
+            new Color(213, 94, 0),
+            new Color(204, 121, 167)
     );
     // FIXME Assure it's not a regular group color already
     private static final Color DEFAULT_GROUP_COLOR = Color.WHITE;
