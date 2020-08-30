@@ -22,7 +22,7 @@ public final class GraphMLGenerator {
         includeDependencies.forEach((file, includes) -> {
             graphMLBuilder.append(String.format("<node id=\"%s\"/>\n", file));
             includes.forEach(include -> {
-                graphMLBuilder.append(String.format("<edge source=\"%s\" target=\"%s\"/>", file, include));
+                graphMLBuilder.append(String.format("<edge source=\"%s\" target=\"%s\"/>\n", file, include));
             });
         });
         graphMLBuilder.append(FOOTER);
