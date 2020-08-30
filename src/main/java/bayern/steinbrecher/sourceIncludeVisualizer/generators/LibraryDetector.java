@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @author Stefan Huber
  * @since 0.1
  */
-final class LibraryDetector {
+class LibraryDetector {
     private static final Logger LOGGER = Logger.getLogger(LibraryDetector.class.getName());
     private final Collection<String> projectFiles;
     private static final String NOT_FOUND_LIBRARY_NAME = "LibraryNotFound";
