@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -60,5 +61,9 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
             includeDependencies.put(file.getFileName().toString(), dependencies);
         }
         return super.visitFile(file, attrs);
+    }
+
+    public Map<String, Collection<String>> getIncludeDependencies(){
+        return Collections.unmodifiableMap(includeDependencies);
     }
 }

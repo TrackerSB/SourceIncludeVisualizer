@@ -3,12 +3,14 @@ package bayern.steinbrecher.sourceIncludeVisualizer;
 import bayern.steinbrecher.jcommander.JCommander;
 import bayern.steinbrecher.jcommander.ParameterException;
 import bayern.steinbrecher.sourceIncludeVisualizer.cpp.CPPIncludeGraphGenerator;
+import bayern.steinbrecher.sourceIncludeVisualizer.generators.GraphMLGenerator;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,11 +44,12 @@ public class Main {
             jCommander.usage();
         } else {
             Queue<String> includeElementsToProcess = new ArrayDeque<>(commandLineArgs.getIncludesToAnalyze());
+            CPPIncludeGraphGenerator graphCollector = new CPPIncludeGraphGenerator();
             while (!includeElementsToProcess.isEmpty()) {
                 Path includeElementPath = Paths.get(includeElementsToProcess.poll())
                         .toAbsolutePath();
                 try {
-                    Files.walkFileTree(includeElementPath, new CPPIncludeGraphGenerator());
+                    Files.walkFileTree(includeElementPath, graphCollector);
                 } catch (IOException ex) {
                     LOGGER.log(
                             Level.SEVERE,
@@ -56,6 +59,18 @@ public class Main {
                             )
                     );
                 }
+            }
+            Path outputFile;
+            try {
+                outputFile = Files.createTempFile(null, null);
+            } catch (IOException ex) {
+                throw new Error("Could not create output file for storing generated GraphML description", ex);
+            }
+            String graphMLContent = GraphMLGenerator.convert(graphCollector.getIncludeDependencies());
+            try {
+                Files.writeString(outputFile, graphMLContent);
+            } catch (IOException ex) {
+                throw new Error("Could not export generated GraphML description", ex);
             }
         }
     }
