@@ -34,7 +34,8 @@ class LibraryDetector {
             /* FIXME The library name considers only the containing directory path but not the library name it actually
              * belongs to
              */
-            String projectInternalLibraryName = file.substring(0, Math.max(0, file.lastIndexOf('/')));
+            int lastDirectorySeparatorIndex = Math.max(file.lastIndexOf('/'), file.lastIndexOf('\\'));
+            String projectInternalLibraryName = file.substring(0, Math.max(0, lastDirectorySeparatorIndex));
             containingLibraries.add(PROJECT_INTERNAL_LIBRARY_PREFIX + projectInternalLibraryName);
         }
 
