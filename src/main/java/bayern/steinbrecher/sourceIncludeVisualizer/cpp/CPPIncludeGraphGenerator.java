@@ -29,7 +29,7 @@ public class CPPIncludeGraphGenerator extends SimpleFileVisitor<Path> {
     private static final PathMatcher FILE_FORMAT_MATCHER
             = FileSystems.getDefault().getPathMatcher("glob:**/*.{h,hpp,hxx,cc,cpp,cxx}");
     private static final Pattern INCLUDE_PATTERN
-            = Pattern.compile("^\\s*#include\\s*[<\"](?<includeName>.+)[>\"](\\s*//.*)?\\R$");
+            = Pattern.compile("^\\s*#include\\s*[<\"](?<includeName>[\\w.]+(/[\\w.]+)*)[>\"]");
     private final Map<String, Collection<String>> includeDependencies = new HashMap<>();
 
     public CPPIncludeGraphGenerator() {
