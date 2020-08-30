@@ -17,7 +17,6 @@ public final class GraphMLGenerator {
     private static final Collection<Color> GROUP_COLOR_NAMES = ColorPalette.COLOR_BLIND_FRIENDLY.getColors();
     // FIXME Assure it's not a regular group color already
     private static final Color DEFAULT_GROUP_COLOR = Color.WHITE;
-    // FIXME Assure it's not a regular group color already
     private static final Color DEFAULT_EDGE_COLOR = Color.BLACK;
     private static final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
             + "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"\n"
@@ -57,7 +56,6 @@ public final class GraphMLGenerator {
     }
 
     public static String convert(Map<String, Collection<String>> includeDependencies) {
-        // FIXME Colors are associated by the include directory path and not by including library
         Queue<Color> remainingGroupColors = new ArrayDeque<>(GROUP_COLOR_NAMES);
         @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         SupplyingMap<String, Color> associatedGroupColors = new SupplyingMap<>(groupName -> {
@@ -68,19 +66,18 @@ public final class GraphMLGenerator {
             }
             return groupColor;
         });
+        LibraryDetector libraryDetector = new LibraryDetector(includeDependencies.keySet());
         StringBuilder graphMLBuilder = new StringBuilder(HEADER);
         includeDependencies.forEach((file, includes) -> {
-            String groupName = file.substring(0, Math.max(0, file.lastIndexOf('/')));
+            String sourceGroupName = libraryDetector.detect(file);
 
             // Insert node for internal file
-            graphMLBuilder.append(generateNodeElement(file, associatedGroupColors.get(groupName)));
+            graphMLBuilder.append(generateNodeElement(file, associatedGroupColors.get(sourceGroupName)));
 
             // Insert include dependency edges
             includes.forEach(include -> {
-                if (!includeDependencies.containsKey(include)) {
-                    graphMLBuilder.append(generateNodeElement(include, DEFAULT_GROUP_COLOR));
-                }
-
+                String targetGroupName = libraryDetector.detect(include);
+                graphMLBuilder.append(generateNodeElement(include, associatedGroupColors.get(targetGroupName)));
                 graphMLBuilder.append(generateEdgeElement(file, include, DEFAULT_EDGE_COLOR));
             });
         });
